@@ -8,6 +8,8 @@ import { DashboardPage } from './pages/DashboardPage';
 import { ScreeningPage } from './pages/ScreeningPage';
 import { SitesPage } from './pages/SitesPage';
 import { UsersPage } from './pages/UsersPage';
+import { MapPage } from './pages/MapPage';
+import { SettingsPage } from './pages/SettingsPage';
 import { useAuthStore } from './stores/authStore';
 
 function App() {
@@ -34,7 +36,9 @@ function App() {
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/sites" element={<SitesPage />} />
                 <Route path="/screening" element={<ScreeningPage />} />
+                <Route path="/map" element={<MapPage />} />
                 <Route path="/users" element={<UsersPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Layout>
