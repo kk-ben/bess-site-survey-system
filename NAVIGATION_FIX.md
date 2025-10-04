@@ -75,7 +75,9 @@ initialize: async () => {
 ✅ ダッシュボード → スクリーニング
 ✅ ダッシュボード → ユーザー管理
 ✅ 地図の詳細パネル → 詳細ページ
-✅ サイドバーのすべてのリンク（既に正しく実装済み）
+✅ サイドバー → 地図表示（新規ページ作成）
+✅ サイドバー → 設定（新規ページ作成）
+✅ サイドバーのすべてのリンク
 
 ## ベストプラクティス
 
@@ -129,9 +131,20 @@ git push origin main
 3. ダッシュボードのクイックアクションボタンをクリック
 4. 正しいページに遷移し、ログイン状態が維持されることを確認
 
+## 追加で作成したページ
+
+### MapPage.tsx
+地図表示機能のプレースホルダーページ。将来的に候補地を地図上で表示・管理する機能を実装予定。
+
+### SettingsPage.tsx
+設定機能のプレースホルダーページ。システム設定やユーザー設定を管理する機能を実装予定。
+
 ## 関連ファイル
 
-- `frontend/src/pages/DashboardPage.tsx`
-- `frontend/src/components/map/DetailPanel.tsx`
-- `frontend/src/stores/authStore.ts`
+- `frontend/src/pages/DashboardPage.tsx` - クイックアクション修正
+- `frontend/src/components/map/DetailPanel.tsx` - 詳細表示ボタン修正
+- `frontend/src/stores/authStore.ts` - 認証初期化改善
+- `frontend/src/App.tsx` - ルート追加
+- `frontend/src/pages/MapPage.tsx` - 新規作成
+- `frontend/src/pages/SettingsPage.tsx` - 新規作成
 - `frontend/src/components/layout/Sidebar.tsx` (参考: 正しい実装例)
