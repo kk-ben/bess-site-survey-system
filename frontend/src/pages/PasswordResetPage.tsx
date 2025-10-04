@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Lock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/common/Button';
-import { AuthService } from '@/services/auth.service';
+import { authService } from '@/services/auth.service';
 import toast from 'react-hot-toast';
 
 export const PasswordResetPage: React.FC = () => {
@@ -18,25 +18,24 @@ export const PasswordResetPage: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const requestMutation = useMutation({
-    mutationFn: (email: string) => AuthService.requestPasswordReset(email),
+    mutationFn: (email: string) => authService.resetPassword(email),
     onSuccess: () => {
       toast.success('パスワードリセットのメールを送信しました');
       setStep('request');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.error?.message || 'リクエストに失敗しました');
+      toast.error(error.message || 'リクエストに失敗しました');
     },
   });
 
   const resetMutation = useMutation({
-    mutationFn: (data: { token: string; password: string }) =>
-      AuthService.resetPassword(data.token, data.password),
+    mutationFn: (password: string) => authService.updatePassword(password),
     onSuccess: () => {
       toast.success('パスワードをリセットしました');
       navigate('/login');
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.error?.message || 'リセットに失敗しました');
+      toast.error(error.message || 'リセットに失敗しました');
     },
   });
 
@@ -83,11 +82,11 @@ export const PasswordResetPage: React.FC = () => {
   const handleResetSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateResetForm() || !token) {
+    if (!validateResetForm()) {
       return;
     }
 
-    resetMutation.mutate({ token, password });
+    resetMutation.mutate(password);
   };
 
   return (

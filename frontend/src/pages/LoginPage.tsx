@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn, Mail, Lock } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
-import { AuthService } from '@/services/auth.service';
+import { authService } from '@/services/auth.service';
 import { Button } from '@/components/common/Button';
 import toast from 'react-hot-toast';
 
@@ -23,13 +23,17 @@ export const LoginPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await AuthService.login({ email, password });
-      login(response.data.user, response.data.token);
-      toast.success('ログインしました');
-      navigate('/');
+      const { user, session } = await authService.login(email, password);
+      
+      if (user && session) {
+        // Zustand storeにユーザー情報を保存
+        login(user, session.access_token);
+        toast.success('ログインしました');
+        navigate('/');
+      }
     } catch (error: any) {
       console.error('Login failed:', error);
-      toast.error(error.response?.data?.error?.message || 'ログインに失敗しました');
+      toast.error(error.message || 'ログインに失敗しました');
     } finally {
       setLoading(false);
     }
