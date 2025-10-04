@@ -35,11 +35,28 @@ app.use(
 );
 
 // CORS configuration
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(o => o.trim()) || [
+  'http://localhost:3000',
+  'http://localhost:5173',
+];
+
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        logger.warn(`CORS blocked request from origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     optionsSuccessStatus: 200,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 
@@ -106,13 +123,14 @@ async function startServer(): Promise<void> {
     logger.info('Database connection established');
 
     await CacheService.initialize();
-    logger.info('Cache service initialized');
+    const cacheStatus = await CacheService.ping();
+    logger.info(`Cache service initialized: ${cacheStatus ? 'Connected' : 'Disabled'}`);
 
     server.listen(PORT, () => {
       logger.info(`🚀 BESS Site Survey System API running on port ${PORT}`);
       logger.info(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
       logger.info(`🗄️  Database: Connected`);
-      logger.info(`🔄 Cache: Connected`);
+      logger.info(`🔄 Cache: ${cacheStatus ? 'Connected' : 'Disabled'}`);
     });
 
     process.on('SIGTERM', gracefulShutdown);

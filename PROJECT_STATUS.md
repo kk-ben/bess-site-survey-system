@@ -10,8 +10,9 @@
 ### プロジェクトフェーズ
 - [x] ローカル開発環境構築完了
 - [x] フロントエンド・バックエンド実装完了
-- [ ] **現在**: オンラインデプロイ準備中
-- [ ] 本番環境デプロイ
+- [x] オンラインデプロイ準備完了
+- [x] **完了**: Vercelフロントエンドデプロイ
+- [ ] **現在**: 動作確認・最終調整
 - [ ] 運用開始
 
 ---
@@ -35,33 +36,34 @@
 - APIキー: `AIzaSyB4FJFVV_fdxoPOYWuFeTrZoB25KTDiQiw`
 - フロントエンド`.env`ファイル: 設定完了
 
+### 4. Vercelデプロイ
+- GitHubプッシュ: 完了
+- Vercelプロジェクト作成: 完了
+- デプロイURL: `bess-site-survey-system-grwzs22qu-kk-bens-projects.vercel.app`
+- 環境変数設定: 完了
+
 ---
 
 ## ⚠️ 未完了・次のステップ
 
 ### 優先度: 高
 
-1. **Supabaseデータベースセットアップ**
-   - [ ] PostGIS拡張の有効化
-   - [ ] スキーマ作成（テーブル、インデックス）
-   - [ ] RLS（Row Level Security）ポリシー設定
-   - [ ] 初期管理者ユーザー作成
-   - 📄 手順: `ONLINE_DEPLOYMENT_QUICKSTART.md` ステップ1参照
-
-2. **ローカル動作確認**
-   - [ ] 開発サーバー起動テスト
-   - [ ] Supabase接続テスト
+1. **動作確認**
+   - [ ] デプロイされたサイトにアクセス
+   - [ ] ログイン機能テスト
+   - [ ] Supabase接続確認
    - [ ] 基本機能動作確認
+
+2. **Supabase URL許可設定**
+   - [ ] Supabase Dashboard → Authentication → URL Configuration
+   - [ ] Vercel URLを許可リストに追加
 
 ### 優先度: 中
 
-3. **Vercelデプロイ準備**
-   - [ ] GitHubリポジトリ作成
-   - [ ] コードプッシュ
-   - [ ] Vercelプロジェクト作成（フロントエンド）
-   - [ ] Vercelプロジェクト作成（バックエンド）
-   - [ ] 環境変数設定
-   - 📄 手順: `ONLINE_DEPLOYMENT_QUICKSTART.md` ステップ2参照
+3. **本番環境最適化**
+   - [ ] カスタムドメイン設定（オプション）
+   - [ ] パフォーマンス最適化
+   - [ ] エラー監視設定
 
 ### 優先度: 低
 
@@ -150,7 +152,13 @@ vercel --prod
 
 ## 🔄 更新履歴
 
-### 2025-10-04
+### 2025-10-04 (最新)
+- ✅ Vercelフロントエンドデプロイ完了
+- ✅ GitHubへのコードプッシュ完了
+- デプロイURL発行: `bess-site-survey-system-grwzs22qu-kk-bens-projects.vercel.app`
+- 次のステップ: 動作確認とSupabase URL許可設定
+
+### 2025-10-04 (初回)
 - プロジェクト状態管理ファイル作成
 - Supabase設定完了を記録
 - Google Maps API設定完了を記録
