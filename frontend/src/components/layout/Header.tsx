@@ -3,7 +3,7 @@ import { Menu, LogOut, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/authStore';
 import { useUiStore } from '@/stores/uiStore';
-import { AuthService } from '@/services/auth.service';
+import { authService } from '@/services/auth.service';
 import toast from 'react-hot-toast';
 
 export const Header: React.FC = () => {
@@ -13,7 +13,7 @@ export const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      await AuthService.logout();
+      await authService.logout();
       logout();
       toast.success('ログアウトしました');
       navigate('/login');
