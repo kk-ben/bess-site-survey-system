@@ -1,2 +1,2 @@
-name,latitude,longitude,address,capacity_mw,status
-候補地名を入力,緯度(例:35.6895),経度(例:139.6917),住所を入力,容量(MW),pending/evaluated/approved
+site_name,latitude,longitude,address,area_sqm,land_use,owner_info,notes
+候補地名を入力,35.6895,139.6917,住所を入力,10000,工業用地/港湾用地/その他,所有者情報,備考・メモ

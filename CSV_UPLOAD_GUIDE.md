@@ -40,19 +40,19 @@ UIから候補地データをCSVファイルでアップロードする方法を
 
 | 列名 | 説明 | 例 | 必須 |
 |------|------|-----|------|
-| `name` | 候補地名 | 茨城県つくば市 工業団地跡地 | ✅ |
+| `site_name` | サイト名 | 茨城県つくば市 工業団地跡地 | ✅ |
 | `latitude` | 緯度 | 36.0839 | ✅ |
 | `longitude` | 経度 | 140.0764 | ✅ |
-| `address` | 住所 | 茨城県つくば市東光台5-19 | ✅ |
-| `capacity_mw` | 容量（MW） | 15.5 | ✅ |
-| `status` | ステータス | pending/evaluated/approved | ✅ |
 
-### ステータスの値
+### オプション列
 
-- `pending`: 未評価
-- `evaluated`: 評価済み
-- `approved`: 承認済み
-- `rejected`: 却下
+| 列名 | 説明 | 例 | 必須 |
+|------|------|-----|------|
+| `address` | 住所 | 茨城県つくば市東光台5-19 | ❌ |
+| `area_sqm` | 面積（㎡） | 50000 | ❌ |
+| `land_use` | 土地利用 | 工業用地/港湾用地 | ❌ |
+| `owner_info` | 所有者情報 | 民間企業/公共 | ❌ |
+| `notes` | 備考 | 30MW規模の候補地 | ❌ |
 
 ### 座標の調べ方
 
@@ -108,20 +108,20 @@ sample-data/sites-sample-medium.csv （10件）
 1. **新規ワークブックを作成**
 2. **1行目にヘッダーを入力**:
    ```
-   name | latitude | longitude | address | capacity_mw | status
+   site_name | latitude | longitude | address | area_sqm | land_use | owner_info | notes
    ```
 3. **2行目以降にデータを入力**:
    ```
-   東京都江東区 臨海工業地帯 | 35.6586 | 139.8200 | 東京都江東区青海2-4-32 | 30.0 | pending
+   東京都江東区 臨海工業地帯 | 35.6586 | 139.8200 | 東京都江東区青海2-4-32 | 50000 | 工業用地 | 民間企業 | 30MW規模
    ```
 4. **名前を付けて保存** → **CSV UTF-8 (コンマ区切り)** を選択
 
 ### テキストエディタで作成する場合
 
 ```csv
-name,latitude,longitude,address,capacity_mw,status
-東京都江東区 臨海工業地帯,35.6586,139.8200,東京都江東区青海2-4-32,30.0,pending
-神奈川県川崎市 工業団地,35.5308,139.7028,神奈川県川崎市川崎区扇町5-1,25.0,pending
+site_name,latitude,longitude,address,area_sqm,land_use,owner_info,notes
+東京都江東区 臨海工業地帯,35.6586,139.8200,東京都江東区青海2-4-32,50000,工業用地,民間企業,30MW規模の候補地
+神奈川県川崎市 工業団地,35.5308,139.7028,神奈川県川崎市川崎区扇町5-1,42000,工業用地,民間企業,25MW規模の候補地
 ```
 
 **保存時の注意**:
@@ -187,16 +187,14 @@ name,latitude,longitude,address,capacity_mw,status
 - 候補地名を変更する
 - 既存データを削除してから再アップロード
 
-### エラー5: "Invalid status value"
+### エラー5: "Invalid area_sqm value"
 
-**原因**: ステータスの値が不正
+**原因**: 面積の値が不正
 
 **対処法**:
-- 以下のいずれかを使用:
-  - `pending`
-  - `evaluated`
-  - `approved`
-  - `rejected`
+- 正の数値を入力（単位: ㎡）
+- 例: 50000（5万㎡）
+- 空欄でもOK（オプション項目）
 
 ---
 
