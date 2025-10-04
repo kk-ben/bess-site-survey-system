@@ -56,13 +56,13 @@ Database URL: postgresql://postgres:[PASSWORD]@db.kcohexmvbccxixyfvjyw.supabase.
 ## 🔧 Supabase設定の更新
 
 ### 認証設定
-- [ ] Supabase Dashboard → Settings → Authentication
-- [ ] URL Configuration セクション
-- [ ] Site URL に Vercel URL を追加
-- [ ] Redirect URLs に以下を追加:
+- [x] Supabase Dashboard → Settings → Authentication
+- [x] URL Configuration セクション
+- [x] Site URL に Vercel URL を追加
+- [x] Redirect URLs に以下を追加:
   ```
-  https://your-project.vercel.app
-  https://your-project.vercel.app/**
+  https://bess-site-survey-system.vercel.app
+  https://bess-site-survey-system.vercel.app/**
   ```
 
 ### データベース設定

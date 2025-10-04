@@ -1,28 +1,52 @@
-import { apiClient } from '@/lib/api';
-import { LoginCredentials, LoginResponse, User } from '@/types/auth';
+import { supabase } from '../lib/supabase';
 
-export class AuthService {
-  static async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    return apiClient.post<LoginResponse>('/auth/login', credentials);
-  }
+export const authService = {
+  async login(email: string, password: string) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    
+    if (error) throw error;
+    return data;
+  },
 
-  static async logout(): Promise<void> {
-    await apiClient.post('/auth/logout');
-  }
+  async logout() {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  },
 
-  static async getCurrentUser(): Promise<{ success: boolean; data: { user: User } }> {
-    return apiClient.get('/auth/me');
-  }
+  async getCurrentUser() {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  },
 
-  static async refreshToken(): Promise<{ success: boolean; data: { token: string } }> {
-    return apiClient.post('/auth/refresh');
-  }
+  async register(email: string, password: string) {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    
+    if (error) throw error;
+    return data;
+  },
 
-  static async requestPasswordReset(email: string): Promise<{ success: boolean }> {
-    return apiClient.post('/auth/password-reset/request', { email });
-  }
+  async resetPassword(email: string) {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) throw error;
+  },
 
-  static async resetPassword(token: string, password: string): Promise<{ success: boolean }> {
-    return apiClient.post('/auth/password-reset/confirm', { token, password });
+  async updatePassword(newPassword: string) {
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+    
+    if (error) throw error;
+  },
+
+  onAuthStateChange(callback: (user: any) => void) {
+    return supabase.auth.onAuthStateChange((event, session) => {
+      callback(session?.user ?? null);
+    });
   }
-}
+};
