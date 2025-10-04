@@ -1,0 +1,2 @@
+name,latitude,longitude,address,capacity_mw,status
+候補地名を入力,緯度(例:35.6895),経度(例:139.6917),住所を入力,容量(MW),pending/evaluated/approved
