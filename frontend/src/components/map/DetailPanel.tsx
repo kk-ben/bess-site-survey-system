@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, MapPin, Maximize, Navigation } from 'lucide-react';
 import { Button } from '@/components/common/Button';
 
@@ -8,6 +9,8 @@ interface DetailPanelProps {
 }
 
 export const DetailPanel: React.FC<DetailPanelProps> = ({ site, onClose }) => {
+  const navigate = useNavigate();
+
   const handleNavigate = () => {
     // Google Mapsで開く
     const url = `https://www.google.com/maps/dir/?api=1&destination=${site.latitude},${site.longitude}`;
@@ -16,7 +19,7 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ site, onClose }) => {
 
   const handleViewDetails = () => {
     // 詳細ページへ遷移
-    window.location.href = `/sites/${site.siteId}`;
+    navigate(`/sites/${site.siteId}`);
   };
 
   return (

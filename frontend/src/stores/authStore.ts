@@ -59,10 +59,16 @@ export const useAuthStore = create<AuthState>()(
               name: user.user_metadata?.name || user.email,
               role: user.user_metadata?.role || 'viewer',
             };
-            set({ user: mappedUser, isAuthenticated: true });
+            const token = localStorage.getItem('auth_token') || null;
+            set({ user: mappedUser, token, isAuthenticated: true });
+          } else {
+            // セッションがない場合はクリア
+            localStorage.removeItem('auth_token');
+            set({ user: null, token: null, isAuthenticated: false });
           }
         } catch (error) {
           console.error('Initialize auth error:', error);
+          localStorage.removeItem('auth_token');
           set({ user: null, token: null, isAuthenticated: false });
         }
       },

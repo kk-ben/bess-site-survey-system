@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { BarChart3, MapPin, CheckCircle, AlertTriangle, TrendingUp } from 'lucide-react';
 import { SiteService } from '@/services/site.service';
 
@@ -12,6 +13,7 @@ interface DashboardStats {
 }
 
 export const DashboardPage: React.FC = () => {
+  const navigate = useNavigate();
   const { data: sitesData, isLoading } = useQuery({
     queryKey: ['sites'],
     queryFn: () => SiteService.getSites({}),
@@ -173,7 +175,7 @@ export const DashboardPage: React.FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">クイックアクション</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <button
-                onClick={() => (window.location.href = '/sites')}
+                onClick={() => navigate('/sites')}
                 className="p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all text-left"
               >
                 <MapPin className="w-6 h-6 text-primary-600 mb-2" />
@@ -182,7 +184,7 @@ export const DashboardPage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => (window.location.href = '/screening')}
+                onClick={() => navigate('/screening')}
                 className="p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all text-left"
               >
                 <BarChart3 className="w-6 h-6 text-primary-600 mb-2" />
@@ -191,7 +193,7 @@ export const DashboardPage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => (window.location.href = '/users')}
+                onClick={() => navigate('/users')}
                 className="p-4 border-2 border-gray-200 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-all text-left"
               >
                 <CheckCircle className="w-6 h-6 text-primary-600 mb-2" />
