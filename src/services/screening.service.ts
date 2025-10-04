@@ -22,6 +22,29 @@ export interface ScreeningOptions {
   sortOrder?: 'ASC' | 'DESC';
 }
 
+export interface ScreeningCriteria extends ScreeningFilters, ScreeningOptions {}
+
+export interface ScreeningResult {
+  siteId: string;
+  siteName: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  areaSqm: number;
+  landUse: string;
+  status?: string;
+  weightedScore: number;
+  totalScore: number;
+  recommendation: string;
+  evaluationId?: string;
+  gridScore: number;
+  setbackScore: number;
+  roadScore: number;
+  poleScore: number;
+  violatesSetback: boolean;
+  evaluationDate: Date;
+}
+
 export class ScreeningService {
   static async screenSites(
     filters: ScreeningFilters,

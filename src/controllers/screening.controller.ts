@@ -1,12 +1,14 @@
 import { Response, NextFunction } from 'express';
-import { ScreeningService, ScreeningCriteria } from '@/services/screening.service';
-import { CsvExporterService } from '@/services/export/csv-exporter.service';
-import { GeoJsonExporterService } from '@/services/export/geojson-exporter.service';
-import { PdfExporterService } from '@/services/export/pdf-exporter.service';
-import { ValidationError } from '@/middleware/errorHandler';
-import { AuthRequest } from '@/middleware/auth';
+import { ScreeningService, ScreeningCriteria } from '../services/screening.service';
+// import { CsvExporterService } from '../services/export/csv-exporter.service';
+import { GeoJsonExporterService } from '../services/export/geojson-exporter.service';
+import { PdfExporterService } from '../services/export/pdf-exporter.service';
+import { ValidationError } from '../middleware/errorHandler';
+import { AuthRequest } from '../middleware/auth';
 import path from 'path';
-import fs from 'fs/promises';
+
+// Temporary workaround for module resolution issue
+const CsvExporterService = require('../services/export/csv-exporter.service').CsvExporterService;
 
 export class ScreeningController {
   static async screenSites(
@@ -43,12 +45,12 @@ export class ScreeningController {
 
       const results = await ScreeningService.screenSites(criteria);
       
-      if (results.length === 0) {
+      if (results.sites.length === 0) {
         throw new ValidationError('No sites match the screening criteria');
       }
 
       const filePath = await CsvExporterService.exportScreeningResults(
-        results,
+        results.sites,
         filename as string
       );
 
@@ -73,12 +75,12 @@ export class ScreeningController {
 
       const results = await ScreeningService.screenSites(criteria);
       
-      if (results.length === 0) {
+      if (results.sites.length === 0) {
         throw new ValidationError('No sites match the screening criteria');
       }
 
       const filePath = await GeoJsonExporterService.exportScreeningResults(
-        results,
+        results.sites,
         filename as string
       );
 
@@ -149,20 +151,18 @@ export class ScreeningController {
 
       const results = await ScreeningService.screenSites(criteria);
       
-      if (results.length === 0) {
+      if (results.sites.length === 0) {
         throw new ValidationError('No sites match the screening criteria');
       }
 
-      // 評価結果を取得
       const evaluations = new Map();
-      for (const site of results) {
+      for (const site of results.sites) {
         if (site.evaluationId) {
           // 評価結果を取得（実装は省略）
-          // evaluations.set(site.siteId, evaluation);
         }
       }
 
-      const pdfBuffer = await PdfExporterService.exportSitesToPdf(results, evaluations);
+      const pdfBuffer = await PdfExporterService.exportSitesToPdf(results.sites, evaluations);
 
       const fileName = filename || `screening-results-${Date.now()}.pdf`;
 

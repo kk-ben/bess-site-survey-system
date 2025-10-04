@@ -62,3 +62,6 @@ export const requireRole = (...roles: string[]) => {
     next();
   };
 };
+
+// Alias for compatibility
+export const authenticate = authMiddleware;

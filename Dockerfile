@@ -25,6 +25,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --only=production && npm cache clean --force
 
+# Copy tsconfig.json for tsconfig-paths
+COPY tsconfig.json ./
+
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
 

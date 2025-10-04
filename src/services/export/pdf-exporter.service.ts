@@ -1,6 +1,9 @@
 import PDFDocument from 'pdfkit';
-import { Site } from '../../interfaces/site.interface';
-import { EvaluationResult } from '../../interfaces/evaluation.interface';
+import { ScreeningResult } from '../screening.service';
+
+// Type aliases for compatibility
+type Site = ScreeningResult;
+type EvaluationResult = any;
 
 export class PdfExporterService {
   /**
@@ -95,7 +98,7 @@ export class PdfExporterService {
     doc.text(`経度: ${site.longitude}`);
     doc.text(`面積: ${site.areaSqm.toLocaleString()} ㎡`);
     doc.text(`土地利用: ${site.landUse || 'N/A'}`);
-    doc.text(`ステータス: ${this.getStatusLabel(site.status)}`);
+    doc.text(`ステータス: ${this.getStatusLabel(site.status || 'unknown')}`);
 
     doc.moveDown(1);
 
@@ -137,7 +140,7 @@ export class PdfExporterService {
         doc.moveDown(0.3);
 
         doc.fontSize(10).font('Helvetica');
-        evaluation.recommendations.forEach((rec) => {
+        evaluation.recommendations.forEach((rec: string) => {
           doc.text(`  • ${rec}`, { indent: 10 });
         });
       }
@@ -150,7 +153,7 @@ export class PdfExporterService {
         doc.moveDown(0.3);
 
         doc.fontSize(10).font('Helvetica');
-        evaluation.warnings.forEach((warning) => {
+        evaluation.warnings.forEach((warning: string) => {
           doc.text(`  ⚠ ${warning}`, { indent: 10 });
         });
       }

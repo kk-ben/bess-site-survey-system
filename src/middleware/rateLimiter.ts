@@ -53,3 +53,6 @@ export const evaluationLimiter = rateLimit({
     },
   },
 });
+
+// Alias for compatibility
+export const rateLimiter = generalLimiter;

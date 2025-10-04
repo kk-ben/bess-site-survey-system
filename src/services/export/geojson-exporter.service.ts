@@ -85,7 +85,7 @@ export class GeoJsonExporterService {
           roadScore: Math.round(result.roadScore * 10) / 10,
           poleScore: Math.round(result.poleScore * 10) / 10,
           violatesSetback: result.violatesSetback,
-          evaluationDate: result.evaluationDate,
+          evaluationDate: result.evaluationDate.toISOString(),
           color: this.getRecommendationColor(result.recommendation),
           markerSize: this.getMarkerSize(result.weightedScore),
         },
