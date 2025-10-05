@@ -59,10 +59,11 @@ export class SiteControllerV2 {
       const site = await SiteModel.findByIdWithDetails(id);
 
       if (!site) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: 'Site not found'
         });
+        return;
       }
 
       res.json({
@@ -85,10 +86,11 @@ export class SiteControllerV2 {
       
       // バリデーション
       if (!siteData.address || !siteData.lat || !siteData.lon) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'Required fields: address, lat, lon'
         });
+        return;
       }
 
       // サイト作成
@@ -97,7 +99,7 @@ export class SiteControllerV2 {
       // 監査ログ記録
       await AuditLogModel.create({
         site_id: site.id,
-        actor: req.user?.id || 'system',
+        actor: req.user?.userId || 'system',
         table_name: 'sites',
         field_name: 'created',
         new_value: site.site_code,
@@ -128,10 +130,11 @@ export class SiteControllerV2 {
       // 既存サイト取得
       const existingSite = await SiteModel.findByIdWithDetails(id);
       if (!existingSite) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: 'Site not found'
         });
+        return;
       }
 
       // サイト更新
@@ -142,7 +145,7 @@ export class SiteControllerV2 {
         if ((existingSite as any)[key] !== value) {
           await AuditLogModel.create({
             site_id: id,
-            actor: req.user?.id || 'system',
+            actor: req.user?.userId || 'system',
             table_name: 'sites',
             field_name: key,
             old_value: String((existingSite as any)[key]),
@@ -175,16 +178,17 @@ export class SiteControllerV2 {
       // 既存サイト確認
       const site = await SiteModel.findByIdWithDetails(id);
       if (!site) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: 'Site not found'
         });
+        return;
       }
 
       // 監査ログ記録
       await AuditLogModel.create({
         site_id: id,
-        actor: req.user?.id || 'system',
+        actor: req.user?.userId || 'system',
         table_name: 'sites',
         field_name: 'deleted',
         old_value: site.site_code,
@@ -291,7 +295,7 @@ export class SiteControllerV2 {
       // 監査ログ記録
       await AuditLogModel.create({
         site_id: id,
-        actor: req.user?.id || 'system',
+        actor: req.user?.userId || 'system',
         table_name: 'grid_info',
         field_name: 'updated',
         new_value: JSON.stringify(gridData),
@@ -334,7 +338,7 @@ export class SiteControllerV2 {
       // 監査ログ記録
       await AuditLogModel.create({
         site_id: id,
-        actor: req.user?.id || 'system',
+        actor: req.user?.userId || 'system',
         table_name: 'geo_risk',
         field_name: 'updated',
         new_value: JSON.stringify(geoData),

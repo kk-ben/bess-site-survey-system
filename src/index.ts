@@ -96,6 +96,10 @@ import importRoutes from '@/routes/import.routes';
 import evaluationRoutes from '@/routes/evaluation.routes';
 import screeningRoutes from '@/routes/screening.routes';
 
+// v2.0 routes
+import siteRoutesV2 from '@/routes/v2/site.routes';
+import importRoutesV2 from '@/routes/v2/import.routes';
+
 // API routes
 app.get('/api/v1', (req, res) => {
   res.json({
@@ -105,12 +109,31 @@ app.get('/api/v1', (req, res) => {
   });
 });
 
+app.get('/api/v2', (req, res) => {
+  res.json({
+    message: 'BESS Site Survey System API v2.0',
+    version: '2.0.0',
+    status: 'running',
+    features: [
+      'Enhanced data model with automation tracking',
+      'Audit log support',
+      'Score history tracking',
+      'Initial job automation'
+    ]
+  });
+});
+
+// v1 API routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/sites', siteRoutes);
 app.use('/api/v1/import', importRoutes);
 app.use('/api/v1/evaluations', evaluationRoutes);
 app.use('/api/v1/screening', screeningRoutes);
+
+// v2.0 API routes
+app.use('/api/v2/sites', siteRoutesV2);
+app.use('/api/v2/import', importRoutesV2);
 
 // Error handling
 app.use(notFoundHandler);

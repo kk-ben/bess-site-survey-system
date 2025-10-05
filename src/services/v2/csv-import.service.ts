@@ -31,10 +31,15 @@ export class CSVImportServiceV2 {
 
     try {
       // CSV解析
-      const records = parse(csvContent, {
-        columns: true,
-        skip_empty_lines: true,
-        trim: true
+      const records = await new Promise<any[]>((resolve, reject) => {
+        parse(csvContent, {
+          columns: true,
+          skip_empty_lines: true,
+          trim: true
+        }, (err, output) => {
+          if (err) reject(err);
+          else resolve(output);
+        });
       });
 
       logger.info(`Importing ${records.length} sites from CSV`);

@@ -7,18 +7,6 @@ import { CSVImportServiceV2 } from '../../services/v2/csv-import.service';
 import { InitialJobService } from '../../services/v2/initial-job.service';
 import { logger } from '../../utils/logger';
 
-// Extend Express Request type
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        email?: string;
-      };
-    }
-  }
-}
-
 export class ImportControllerV2 {
   /**
    * CSVインポート
@@ -29,16 +17,17 @@ export class ImportControllerV2 {
       const { csv_content, trigger_initial_jobs = true } = req.body;
 
       if (!csv_content) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'CSV content is required'
         });
+        return;
       }
 
       // CSVインポート実行
       const result = await CSVImportServiceV2.importFromCSV(
         csv_content,
-        req.user?.id || 'system'
+        req.user?.userId || 'system'
       );
 
       // 初期ジョブトリガー（オプション）
@@ -48,7 +37,7 @@ export class ImportControllerV2 {
         // 非同期で初期ジョブを実行（レスポンスは待たない）
         InitialJobService.processMultipleSites(
           result.sites.map(s => s.id)
-        ).catch(error => {
+        ).catch((error: Error) => {
           logger.error('Error in initial jobs:', error);
         });
       }
@@ -95,16 +84,17 @@ export class ImportControllerV2 {
       const { site_ids } = req.body;
 
       if (!site_ids || !Array.isArray(site_ids)) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
           message: 'site_ids array is required'
         });
+        return;
       }
 
       logger.info(`Manually triggering initial jobs for ${site_ids.length} sites`);
 
       // 非同期で実行
-      InitialJobService.processMultipleSites(site_ids).catch(error => {
+      InitialJobService.processMultipleSites(site_ids).catch((error: Error) => {
         logger.error('Error in initial jobs:', error);
       });
 

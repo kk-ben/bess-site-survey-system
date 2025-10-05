@@ -9,6 +9,15 @@ export interface JWTPayload {
   role: string;
 }
 
+// グローバルなExpress.Requestの型拡張と統一
+declare global {
+  namespace Express {
+    interface Request {
+      user?: JWTPayload;
+    }
+  }
+}
+
 export interface AuthRequest extends Request {
   user?: JWTPayload;
 }
