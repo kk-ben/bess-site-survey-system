@@ -40,45 +40,45 @@ $APP_DIR = "/var/www/bess-site-survey-system"
 
 Write-Host ""
 Log-Info "========================================="
-Log-Info "BESS v2.0 API - リモートデプロイ開始"
+Log-Info "BESS v2.0 API - Remote Deploy Starting"
 Log-Info "========================================="
 Write-Host ""
 
-# ステップ1: VPS接続確認
-Log-Info "ステップ1: VPS接続確認中..."
+# Step 1: VPS connection check
+Log-Info "Step 1: Checking VPS connection..."
 try {
     $testConnection = ssh -o ConnectTimeout=5 $VPS_SSH "echo 'Connection OK'" 2>&1
     if ($LASTEXITCODE -eq 0) {
-        Log-Success "VPS接続成功"
+        Log-Success "VPS connection successful"
     } else {
-        throw "接続失敗"
+        throw "Connection failed"
     }
 } catch {
-    Log-Error "VPS接続失敗。SSH接続情報を確認してください。"
+    Log-Error "VPS connection failed. Please check SSH connection info."
     exit 1
 }
 
-# ステップ2: ローカルの変更をGitHubにプッシュ
-Log-Info "ステップ2: ローカルの変更をGitHubにプッシュ中..."
+# Step 2: Push local changes to GitHub
+Log-Info "Step 2: Pushing local changes to GitHub..."
 $gitStatus = git status --porcelain
 if ([string]::IsNullOrEmpty($gitStatus)) {
-    Log-Info "変更なし。プッシュをスキップします。"
+    Log-Info "No changes. Skipping push."
 } else {
-    Log-Warning "未コミットの変更があります。"
-    $response = Read-Host "変更をコミットしてプッシュしますか？ (y/n)"
+    Log-Warning "Uncommitted changes detected."
+    $response = Read-Host "Commit and push changes? (y/n)"
     if ($response -eq "y" -or $response -eq "Y") {
         git add .
-        $commitMsg = Read-Host "コミットメッセージを入力"
+        $commitMsg = Read-Host "Enter commit message"
         git commit -m $commitMsg
         git push origin main
-        Log-Success "GitHubへのプッシュ完了"
+        Log-Success "Pushed to GitHub successfully"
     } else {
-        Log-Warning "プッシュをスキップしました。VPSは最新のコードを取得できません。"
+        Log-Warning "Push skipped. VPS will not get latest code."
     }
 }
 
-# ステップ3: VPS上でデプロイスクリプトを実行
-Log-Info "ステップ3: VPS上でデプロイスクリプトを実行中..."
+# Step 3: Execute deploy script on VPS
+Log-Info "Step 3: Executing deploy script on VPS..."
 
 $deployScript = @'
 set -e
@@ -106,44 +106,44 @@ echo -e "${BLUE}[VPS]${NC} デプロイスクリプトを実行..."
 try {
     $deployScript | ssh $VPS_SSH "bash -s"
     if ($LASTEXITCODE -eq 0) {
-        Log-Success "VPS上でのデプロイ完了"
+        Log-Success "Deploy completed on VPS"
     } else {
-        throw "デプロイ失敗"
+        throw "Deploy failed"
     }
 } catch {
-    Log-Error "VPS上でのデプロイ失敗"
+    Log-Error "Deploy failed on VPS"
     exit 1
 }
 
-# ステップ4: 動作確認
-Log-Info "ステップ4: 外部からの動作確認中..."
+# Step 4: Health check
+Log-Info "Step 4: Checking API health..."
 Start-Sleep -Seconds 3
 
-# v2.0 ヘルスチェック
+# v2.0 health check
 try {
     $healthCheck = Invoke-RestMethod -Uri "https://api.ps-system.jp/api/v2/health" -Method Get -ErrorAction Stop
-    Log-Success "v2.0 API: 正常動作中"
+    Log-Success "v2.0 API: Running normally"
     Write-Host ""
     $healthCheck | ConvertTo-Json -Depth 10
 } catch {
-    Log-Warning "v2.0 API: 応答なし（起動中の可能性があります）"
+    Log-Warning "v2.0 API: No response (may be starting up)"
 }
 
-# 完了メッセージ
+# Completion message
 Write-Host ""
 Log-Success "========================================="
-Log-Success "リモートデプロイ完了！"
+Log-Success "Remote Deploy Completed!"
 Log-Success "========================================="
 Write-Host ""
-Log-Info "📊 API情報:"
+Log-Info "API Info:"
 Log-Info "  - v1.0 API: https://api.ps-system.jp/api/v1"
 Log-Info "  - v2.0 API: https://api.ps-system.jp/api/v2"
 Write-Host ""
-Log-Info "🔍 動作確認コマンド:"
+Log-Info "Health Check Commands:"
 Log-Info "  curl https://api.ps-system.jp/api/v2/health"
 Log-Info "  curl https://api.ps-system.jp/api/v2/sites"
 Write-Host ""
-Log-Info "📝 VPSログ確認コマンド:"
+Log-Info "VPS Log Check Command:"
 Log-Info "  ssh $VPS_SSH 'pm2 logs bess-api --lines 50'"
 Write-Host ""
 

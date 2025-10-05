@@ -19,7 +19,7 @@ export class SiteControllerV2 {
    * サイト一覧取得
    * GET /api/v2/sites
    */
-  static async list(req: Request, res: Response, next: NextFunction) {
+  static async list(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const filter: ISiteFilter = {
         status: req.query.status as any,
@@ -53,7 +53,7 @@ export class SiteControllerV2 {
    * サイト詳細取得
    * GET /api/v2/sites/:id
    */
-  static async getById(req: Request, res: Response, next: NextFunction) {
+  static async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const site = await SiteModel.findByIdWithDetails(id);
@@ -79,7 +79,7 @@ export class SiteControllerV2 {
    * サイト作成
    * POST /api/v2/sites
    */
-  static async create(req: Request, res: Response, next: NextFunction) {
+  static async create(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const siteData: ICreateSiteDTO = req.body;
       
@@ -120,7 +120,7 @@ export class SiteControllerV2 {
    * サイト更新
    * PUT /api/v2/sites/:id
    */
-  static async update(req: Request, res: Response, next: NextFunction) {
+  static async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const updateData: IUpdateSiteDTO = req.body;
@@ -139,13 +139,13 @@ export class SiteControllerV2 {
 
       // 監査ログ記録（変更されたフィールドのみ）
       for (const [key, value] of Object.entries(updateData)) {
-        if (existingSite[key] !== value) {
+        if ((existingSite as any)[key] !== value) {
           await AuditLogModel.create({
             site_id: id,
             actor: req.user?.id || 'system',
             table_name: 'sites',
             field_name: key,
-            old_value: String(existingSite[key]),
+            old_value: String((existingSite as any)[key]),
             new_value: String(value),
             changed_at: new Date()
           });
@@ -168,7 +168,7 @@ export class SiteControllerV2 {
    * サイト削除
    * DELETE /api/v2/sites/:id
    */
-  static async delete(req: Request, res: Response, next: NextFunction) {
+  static async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
 

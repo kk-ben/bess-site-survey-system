@@ -2,7 +2,7 @@
 // BESS Site Survey System v2.0 - CSV Import Service
 // ============================================================================
 
-import { parse } from 'csv-parse/sync';
+import { parse } from 'csv-parse';
 import { SiteModel } from '../../models/v2/site.model';
 import { ICreateSiteDTO } from '../../interfaces/v2/site.interface';
 import { logger } from '../../utils/logger';
@@ -58,11 +58,11 @@ export class CSVImportServiceV2 {
           });
 
           logger.info(`Site imported: ${site.site_code}`);
-        } catch (error) {
+        } catch (error: any) {
           result.failed++;
           result.errors.push({
             row: rowNumber,
-            error: error.message
+            error: error.message || String(error)
           });
 
           logger.error(`Error importing row ${rowNumber}:`, error);
@@ -72,9 +72,9 @@ export class CSVImportServiceV2 {
       logger.info(`Import completed: ${result.success} success, ${result.failed} failed`);
 
       return result;
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Error parsing CSV:', error);
-      throw new Error(`CSV parsing error: ${error.message}`);
+      throw new Error(`CSV parsing error: ${error.message || String(error)}`);
     }
   }
 

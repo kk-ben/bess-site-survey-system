@@ -1,4 +1,5 @@
 import { Pool, PoolConfig } from 'pg';
+import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/utils/logger';
 
 const poolConfig: PoolConfig = {
@@ -13,6 +14,12 @@ export const pool = new Pool(poolConfig);
 pool.on('error', (err) => {
   logger.error('Unexpected database error:', err);
 });
+
+// Supabase client for v2.0 API
+export const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+);
 
 export class DatabaseService {
   static async initialize(): Promise<void> {

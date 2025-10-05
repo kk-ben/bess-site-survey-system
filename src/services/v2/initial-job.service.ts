@@ -64,11 +64,11 @@ export class InitialJobService {
       
       const geoRisk = await GeoRiskModel.create({
         site_id: siteId,
-        elevation_m: null, // TODO: Google Elevation API
-        slope_pct: null,   // TODO: DEM計算
-        flood_depth_class: null, // TODO: 国土地理院ハザードタイル
-        liquefaction_risk: null,
-        sun_hours_loss: null, // TODO: Google Solar API
+        elevation_m: undefined, // TODO: Google Elevation API
+        slope_pct: undefined,   // TODO: DEM計算
+        flood_depth_class: undefined, // TODO: 国土地理院ハザードタイル
+        liquefaction_risk: undefined,
+        sun_hours_loss: undefined, // TODO: Google Solar API
         automation_level: 'AUTO',
         updated_from_source_at: new Date(),
         note: 'Placeholder - API integration pending'
@@ -83,7 +83,7 @@ export class InitialJobService {
         source_name: 'Google Elevation API',
         source_url: 'https://maps.googleapis.com/maps/api/elevation',
         last_refreshed_at: new Date(),
-        refresh_interval_hours: null, // 初回のみ
+        refresh_interval_hours: undefined, // 初回のみ
         parser_version: 'v1.0',
         note: 'Pending implementation'
       });
@@ -104,13 +104,13 @@ export class InitialJobService {
       
       const gridInfo = await GridInfoModel.create({
         site_id: siteId,
-        target_voltage_kv: null, // MANUAL
-        substation_distance_m: null, // TODO: 変電所座標DBから計算
-        line_distance_m: null, // TODO: OSM送電線データから計算
-        capacity_available_mw: null, // SEMI - プレースホルダ
-        congestion_level: null,
-        connection_cost_jpy: null, // MANUAL
-        reinforcement_plan: null,
+        target_voltage_kv: undefined, // MANUAL
+        substation_distance_m: undefined, // TODO: 変電所座標DBから計算
+        line_distance_m: undefined, // TODO: OSM送電線データから計算
+        capacity_available_mw: undefined, // SEMI - プレースホルダ
+        congestion_level: undefined,
+        connection_cost_jpy: undefined, // MANUAL
+        reinforcement_plan: undefined,
         automation_level: 'SEMI', // 空き容量は要レビュー
         updated_from_source_at: new Date(),
         note: 'Placeholder - Capacity data requires review'
@@ -123,9 +123,9 @@ export class InitialJobService {
         field_name: 'substation_distance_m',
         source_type: 'API',
         source_name: 'Substation Database',
-        source_url: null,
+        source_url: undefined,
         last_refreshed_at: new Date(),
-        refresh_interval_hours: null,
+        refresh_interval_hours: undefined,
         parser_version: 'v1.0',
         note: 'Pending implementation'
       });
@@ -147,13 +147,13 @@ export class InitialJobService {
       
       const score = await ScoreModel.create({
         site_id: siteId,
-        score_total: null,
-        score_grid: null,
-        score_geo: null,
-        score_regulatory: null,
-        score_access: null,
-        score_economics: null,
-        grade: null,
+        score_total: undefined,
+        score_grid: undefined,
+        score_geo: undefined,
+        score_regulatory: undefined,
+        score_access: undefined,
+        score_economics: undefined,
+        grade: undefined,
         formula_version: 'v1.0',
         calculated_at: new Date()
       });

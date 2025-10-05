@@ -7,12 +7,24 @@ import { CSVImportServiceV2 } from '../../services/v2/csv-import.service';
 import { InitialJobService } from '../../services/v2/initial-job.service';
 import { logger } from '../../utils/logger';
 
+// Extend Express Request type
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        email?: string;
+      };
+    }
+  }
+}
+
 export class ImportControllerV2 {
   /**
    * CSVインポート
    * POST /api/v2/import/csv
    */
-  static async importCSV(req: Request, res: Response, next: NextFunction) {
+  static async importCSV(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { csv_content, trigger_initial_jobs = true } = req.body;
 
@@ -61,7 +73,7 @@ export class ImportControllerV2 {
    * CSVテンプレートダウンロード
    * GET /api/v2/import/template
    */
-  static async downloadTemplate(req: Request, res: Response, next: NextFunction) {
+  static async downloadTemplate(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const template = CSVImportServiceV2.generateTemplate();
 
@@ -78,7 +90,7 @@ export class ImportControllerV2 {
    * 初期ジョブを手動トリガー
    * POST /api/v2/import/trigger-initial-jobs
    */
-  static async triggerInitialJobs(req: Request, res: Response, next: NextFunction) {
+  static async triggerInitialJobs(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { site_ids } = req.body;
 
@@ -107,5 +119,3 @@ export class ImportControllerV2 {
     }
   }
 }
-
-export default router;
