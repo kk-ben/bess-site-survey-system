@@ -3,101 +3,61 @@
 // ============================================================================
 
 import { Router } from 'express';
-import { SiteControllerV2 } from '../../controllers/v2/site.controller';
+import { siteControllerV2 } from '../../controllers/v2/site.controller';
 import { authMiddleware } from '../../middleware/auth';
+import { rateLimiter } from '../../middleware/rateLimiter';
 
 const router = Router();
 
-// すべてのルートに認証を適用
+// 認証とレート制限を適用
 router.use(authMiddleware);
-
-// ============================================================================
-// Site CRUD
-// ============================================================================
+router.use(rateLimiter);
 
 /**
  * @route   GET /api/v2/sites
- * @desc    サイト一覧取得（フィルタ・ページネーション対応）
+ * @desc    サイト一覧取得（フィルター・ページング対応）
  * @access  Private
- * @query   status, priority_rank, grade, min_score, max_score, has_pending_review
- * @query   page, limit, sort_by, sort_order
+ * @query   page, limit, status, priority_rank, min_score, max_score, 
+ *          min_capacity_mw, max_capacity_mw, automation_level, search, 
+ *          sort_by, sort_order
  */
-router.get('/', SiteControllerV2.list);
+router.get('/', (req, res) => siteControllerV2.getSites(req, res));
+
+/**
+ * @route   GET /api/v2/sites/stats/automation
+ * @desc    自動化レベル統計取得
+ * @access  Private
+ */
+router.get('/stats/automation', (req, res) => siteControllerV2.getAutomationStats(req, res));
 
 /**
  * @route   GET /api/v2/sites/:id
- * @desc    サイト詳細取得（関連データ含む）
+ * @desc    サイト詳細取得（全関連データ含む）
  * @access  Private
  */
-router.get('/:id', SiteControllerV2.getById);
+router.get('/:id', (req, res) => siteControllerV2.getSiteById(req, res));
 
 /**
  * @route   POST /api/v2/sites
- * @desc    サイト作成
+ * @desc    サイト新規作成
  * @access  Private
- * @body    { address, lat, lon, name?, area_m2?, ... }
+ * @body    ICreateSiteDTO
  */
-router.post('/', SiteControllerV2.create);
+router.post('/', (req, res) => siteControllerV2.createSite(req, res));
 
 /**
  * @route   PUT /api/v2/sites/:id
  * @desc    サイト更新
  * @access  Private
- * @body    { name?, address?, status?, ... }
+ * @body    IUpdateSiteDTO
  */
-router.put('/:id', SiteControllerV2.update);
+router.put('/:id', (req, res) => siteControllerV2.updateSite(req, res));
 
 /**
  * @route   DELETE /api/v2/sites/:id
  * @desc    サイト削除
- * @access  Private (admin only)
- */
-router.delete('/:id', SiteControllerV2.delete);
-
-// ============================================================================
-// Site Related Data
-// ============================================================================
-
-/**
- * @route   GET /api/v2/sites/:id/audit-log
- * @desc    サイトの監査ログ取得
- * @access  Private
- * @query   limit (default: 50)
- */
-router.get('/:id/audit-log', SiteControllerV2.getAuditLog);
-
-/**
- * @route   GET /api/v2/sites/:id/scores
- * @desc    サイトのスコア履歴取得
  * @access  Private
  */
-router.get('/:id/scores', SiteControllerV2.getScores);
+router.delete('/:id', (req, res) => siteControllerV2.deleteSite(req, res));
 
-/**
- * @route   GET /api/v2/sites/:id/automation-sources
- * @desc    サイトの自動化ソース取得
- * @access  Private
- */
-router.get('/:id/automation-sources', SiteControllerV2.getAutomationSources);
-
-// ============================================================================
-// Site Attribute Updates
-// ============================================================================
-
-/**
- * @route   PUT /api/v2/sites/:id/grid-info
- * @desc    Grid Info更新
- * @access  Private
- * @body    { target_voltage_kv?, substation_distance_m?, ... }
- */
-router.put('/:id/grid-info', SiteControllerV2.updateGridInfo);
-
-/**
- * @route   PUT /api/v2/sites/:id/geo-risk
- * @desc    Geo Risk更新
- * @access  Private
- * @body    { elevation_m?, slope_pct?, ... }
- */
-router.put('/:id/geo-risk', SiteControllerV2.updateGeoRisk);
-
-export default router;
+export { router as siteRoutesV2 };

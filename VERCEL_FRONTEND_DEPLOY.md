@@ -1,4 +1,4 @@
-# 🚀 BESS Site Survey System - Vercelフロントエンドデプロイガイド
+﻿# 🚀 BESS Site Survey System - Vercelフロントエンドデプロイガイド
 
 ## 📋 前提条件
 
@@ -133,10 +133,10 @@ Vercelが自動的にSSL証明書を発行します（数分かかる場合が�
 VPSにSSH接続して、バックエンドの環境変数を更新：
 
 ```bash
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 
 # 環境変数ファイルを編集
-nano /var/www/bess-site-survey-system/.env.production
+nano /home/ubuntu/bess-site-survey-system/.env.production
 ```
 
 `CORS_ORIGIN` を更新：
@@ -231,7 +231,7 @@ Access to fetch at 'https://api.ps-system.jp/api/v1/...' from origin 'https://be
 
 **解決策**:
 1. VPSにSSH接続
-2. `/var/www/bess-site-survey-system/.env.production` の `CORS_ORIGIN` を確認
+2. `/home/ubuntu/bess-site-survey-system/.env.production` の `CORS_ORIGIN` を確認
 3. Vercelのドメインと一致しているか確認
 4. `pm2 restart bess-api` で再起動
 

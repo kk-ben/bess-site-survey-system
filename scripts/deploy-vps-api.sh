@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 # =============================================================================
 # BESS Site Survey System - VPS API自動デプロイスクリプト
@@ -35,7 +35,7 @@ log_error() {
 
 VPS_IP="153.121.61.164"
 DOMAIN="api.ps-system.jp"
-APP_DIR="/var/www/bess-site-survey-system"
+APP_DIR="/home/ubuntu/bess-site-survey-system"
 APP_NAME="bess-api"
 REPO_URL="https://github.com/kk-ben/bess-site-survey-system.git"
 

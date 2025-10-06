@@ -1,4 +1,4 @@
-# 🚀 BESS v2.0 API - VPSデプロイガイド
+﻿# 🚀 BESS v2.0 API - VPSデプロイガイド
 
 ## 📋 前提条件
 
@@ -30,7 +30,7 @@ git push origin main
 ### ステップ2：VPSにSSH接続
 
 ```powershell
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 ```
 
 ---
@@ -38,7 +38,7 @@ ssh root@153.121.61.164
 ### ステップ3：プロジェクトを更新
 
 ```bash
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 
 # 最新コードを取得
 git pull origin main
@@ -181,7 +181,7 @@ curl https://api.ps-system.jp/api/v2/sites
 ### エラー: "Cannot find module"
 
 ```bash
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 npm install
 npm run build
 pm2 restart bess-api
@@ -207,7 +207,7 @@ pm2 logs bess-api
 tail -f /var/log/nginx/bess-api.error.log
 
 # アプリケーションログ
-tail -f /var/www/bess-site-survey-system/logs/app.log
+tail -f /home/ubuntu/bess-site-survey-system/logs/app.log
 ```
 
 ---

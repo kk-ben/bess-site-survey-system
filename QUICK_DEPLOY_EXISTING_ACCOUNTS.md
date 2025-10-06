@@ -1,4 +1,4 @@
-# 🚀 クイックデプロイガイド（既存アカウント使用）
+﻿# 🚀 クイックデプロイガイド（既存アカウント使用）
 
 既にSupabaseとVercelのアカウントをお持ちの場合の簡略版デプロイ手順です。
 
@@ -77,7 +77,7 @@ nslookup api.ps-system.jp
 #### 2.3 VPSにSSH接続
 
 ```powershell
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 ```
 
 パスワードを入力してログイン。
@@ -111,7 +111,7 @@ chmod +x deploy.sh
 #### 2.5 環境変数を更新
 
 ```bash
-nano /var/www/bess-site-survey-system/.env.production
+nano /home/ubuntu/bess-site-survey-system/.env.production
 ```
 
 以下を更新（ステップ1で取得したSupabase情報を使用）：
@@ -210,8 +210,8 @@ git push origin main
 VPSにSSH接続（別のターミナルまたは再接続）：
 
 ```bash
-ssh root@153.121.61.164
-nano /var/www/bess-site-survey-system/.env.production
+ssh ubuntu@153.121.61.164
+nano /home/ubuntu/bess-site-survey-system/.env.production
 ```
 
 `CORS_ORIGIN` をVercelのURLに更新：
@@ -285,12 +285,12 @@ Database: Supabase (既存アカウント内の新プロジェクト)
 **解決策**:
 ```bash
 # VPSで確認
-ssh root@153.121.61.164
-grep CORS_ORIGIN /var/www/bess-site-survey-system/.env.production
+ssh ubuntu@153.121.61.164
+grep CORS_ORIGIN /home/ubuntu/bess-site-survey-system/.env.production
 
 # Vercelのドメインと一致しているか確認
 # 一致していない場合は更新
-nano /var/www/bess-site-survey-system/.env.production
+nano /home/ubuntu/bess-site-survey-system/.env.production
 pm2 restart bess-api
 ```
 
@@ -314,7 +314,7 @@ pm2 restart bess-api
 curl https://api.ps-system.jp/api/v1/health
 
 # 起動していない場合
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 pm2 restart bess-api
 pm2 logs bess-api
 ```

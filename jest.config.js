@@ -7,7 +7,9 @@ module.exports = {
     '**/?(*.)+(spec|test).ts'
   ],
   transform: {
-    '^.+\\.ts$': 'ts-jest'
+    '^.+\\.ts$': ['ts-jest', {
+      tsconfig: 'tsconfig.test.json'
+    }]
   },
   collectCoverageFrom: [
     'src/**/*.ts',
@@ -23,7 +25,8 @@ module.exports = {
   ],
   setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/src/$1'
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '^@supabase/supabase-js$': '<rootDir>/src/__tests__/__mocks__/supabase.ts'
   },
   testTimeout: 10000
 };

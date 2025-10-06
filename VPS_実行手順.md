@@ -1,4 +1,4 @@
-# 🚀 VPSでv2.0 APIをデプロイする手順
+﻿# 🚀 VPSでv2.0 APIをデプロイする手順
 
 ## 📋 これから行うこと
 
@@ -25,7 +25,7 @@ VPSにログインしたら、以下のコマンドを**1行ずつ**実行：
 
 ```bash
 # プロジェクトディレクトリに移動
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 
 # 最新コードを取得（v2.0スクリプトを含む）
 git pull origin main
@@ -119,7 +119,7 @@ pm2 restart bess-api
 
 ```bash
 # node_modulesを削除して再インストール
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 rm -rf node_modules
 npm install
 npm run build

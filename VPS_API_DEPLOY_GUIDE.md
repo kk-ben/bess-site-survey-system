@@ -1,4 +1,4 @@
-# 🚀 BESS Site Survey System - VPS APIデプロイガイド
+﻿# 🚀 BESS Site Survey System - VPS APIデプロイガイド
 
 ## 📋 構成情報
 
@@ -40,7 +40,7 @@ nslookup api.ps-system.jp
 
 ```bash
 # PowerShellまたはコマンドプロンプトから
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 ```
 
 初回接続時は、フィンガープリントの確認が表示されます。`yes` を入力して続行してください。
@@ -301,7 +301,7 @@ curl https://api.ps-system.jp/api/v1/health
 ### コードの更新
 
 ```bash
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 
 # 最新コードを取得
 git pull origin main
@@ -416,7 +416,7 @@ pm2 start bess-api
 
 1. [Supabase](https://supabase.com)でプロジェクトを作成
 2. データベースURLとAPIキーを取得
-3. `/var/www/bess-site-survey-system/.env.production` を更新
+3. `/home/ubuntu/bess-site-survey-system/.env.production` を更新
 4. `pm2 restart bess-api` で再起動
 
 ### 2. フロントエンドのデプロイ

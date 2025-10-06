@@ -1,4 +1,4 @@
-# 🚀 ローカルからVPSへv2.0 APIをデプロイする手順
+﻿# 🚀 ローカルからVPSへv2.0 APIをデプロイする手順
 
 ## 📋 概要
 
@@ -16,7 +16,7 @@
 
 ✅ VPS上の既存環境
 - Node.js、PM2、Nginx、n8n、文字起こしサービスなどが稼働中
-- `/var/www/bess-site-survey-system` にプロジェクトが配置済み
+- `/home/ubuntu/bess-site-survey-system` にプロジェクトが配置済み
 
 ---
 
@@ -80,7 +80,7 @@ VPSにログインしたら：
 
 ```bash
 # プロジェクトディレクトリに移動
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 
 # 最新コードを取得
 git pull origin main
@@ -163,7 +163,7 @@ pm2 restart bess-api
 
 ```bash
 # VPS上で手動ビルド
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 rm -rf node_modules
 npm install
 npm run build

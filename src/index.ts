@@ -97,7 +97,8 @@ import evaluationRoutes from '@/routes/evaluation.routes';
 import screeningRoutes from '@/routes/screening.routes';
 
 // v2.0 routes
-import siteRoutesV2 from '@/routes/v2/site.routes';
+import { siteRoutesV2 } from '@/routes/v2/site.routes';
+import { automationRoutesV2 } from '@/routes/v2/automation.routes';
 import importRoutesV2 from '@/routes/v2/import.routes';
 
 // API routes
@@ -133,6 +134,7 @@ app.use('/api/v1/screening', screeningRoutes);
 
 // v2.0 API routes
 app.use('/api/v2/sites', siteRoutesV2);
+app.use('/api/v2/automation', automationRoutesV2);
 app.use('/api/v2/import', importRoutesV2);
 
 // Error handling

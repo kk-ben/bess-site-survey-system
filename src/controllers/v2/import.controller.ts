@@ -4,7 +4,6 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { CSVImportServiceV2 } from '../../services/v2/csv-import.service';
-import { InitialJobService } from '../../services/v2/initial-job.service';
 import { logger } from '../../utils/logger';
 
 export class ImportControllerV2 {
@@ -31,15 +30,9 @@ export class ImportControllerV2 {
       );
 
       // 初期ジョブトリガー（オプション）
+      // TODO: 自動化ジョブの実装
       if (trigger_initial_jobs && result.sites.length > 0) {
-        logger.info(`Triggering initial jobs for ${result.sites.length} sites`);
-        
-        // 非同期で初期ジョブを実行（レスポンスは待たない）
-        InitialJobService.processMultipleSites(
-          result.sites.map(s => s.id)
-        ).catch((error: Error) => {
-          logger.error('Error in initial jobs:', error);
-        });
+        logger.info(`Initial jobs would be triggered for ${result.sites.length} sites`);
       }
 
       // サマリー生成
@@ -94,13 +87,12 @@ export class ImportControllerV2 {
       logger.info(`Manually triggering initial jobs for ${site_ids.length} sites`);
 
       // 非同期で実行
-      InitialJobService.processMultipleSites(site_ids).catch((error: Error) => {
-        logger.error('Error in initial jobs:', error);
-      });
+      // TODO: 自動化ジョブの実装
+      logger.info(`Initial jobs would be triggered for ${site_ids.length} sites`);
 
       res.json({
         success: true,
-        message: `Initial jobs triggered for ${site_ids.length} sites`,
+        message: `Initial jobs would be triggered for ${site_ids.length} sites`,
         data: { site_ids }
       });
     } catch (error) {

@@ -1,4 +1,4 @@
-# ✅ BESS Site Survey System - 完全デプロイチェックリスト
+﻿# ✅ BESS Site Survey System - 完全デプロイチェックリスト
 
 ## 📋 デプロイ構成
 
@@ -61,7 +61,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
 #### 2.2 VPSにSSH接続
 
 ```bash
-ssh root@153.121.61.164
+ssh ubuntu@153.121.61.164
 ```
 
 #### 2.3 自動デプロイスクリプトを実行
@@ -86,7 +86,7 @@ chmod +x deploy.sh
 #### 2.4 環境変数を更新
 
 ```bash
-nano /var/www/bess-site-survey-system/.env.production
+nano /home/ubuntu/bess-site-survey-system/.env.production
 ```
 
 以下を更新：
@@ -196,8 +196,8 @@ VITE_GOOGLE_MAPS_API_KEY=your-key
 #### 4.1 VPSでCORS設定を更新
 
 ```bash
-ssh root@153.121.61.164
-nano /var/www/bess-site-survey-system/.env.production
+ssh ubuntu@153.121.61.164
+nano /home/ubuntu/bess-site-survey-system/.env.production
 ```
 
 `CORS_ORIGIN` を更新：
@@ -262,7 +262,7 @@ pm2 logs bess-api --lines 50
 pm2 logs bess-api --lines 100
 
 # 環境変数を確認
-cat /var/www/bess-site-survey-system/.env.production
+cat /home/ubuntu/bess-site-survey-system/.env.production
 
 # アプリケーションを再起動
 pm2 restart bess-api
@@ -272,7 +272,7 @@ pm2 restart bess-api
 
 ```bash
 # VPSでCORS設定を確認
-grep CORS_ORIGIN /var/www/bess-site-survey-system/.env.production
+grep CORS_ORIGIN /home/ubuntu/bess-site-survey-system/.env.production
 
 # Vercelのドメインと一致しているか確認
 # 一致していない場合は更新して再起動
@@ -316,7 +316,7 @@ pm2 restart bess-api
 crontab -e
 
 # 毎日午前2時にコードをバックアップ
-0 2 * * * cd /var/www/bess-site-survey-system && git pull origin main
+0 2 * * * cd /home/ubuntu/bess-site-survey-system && git pull origin main
 ```
 
 ---
@@ -347,7 +347,7 @@ pm2 restart bess-api
 pm2 logs bess-api
 
 # VPS: コード更新
-cd /var/www/bess-site-survey-system && git pull && npm install && npm run build && pm2 restart bess-api
+cd /home/ubuntu/bess-site-survey-system && git pull && npm install && npm run build && pm2 restart bess-api
 
 # ローカル: Vercelに再デプロイ
 git push origin main

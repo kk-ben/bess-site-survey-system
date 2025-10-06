@@ -1,4 +1,4 @@
-# ============================================================================
+﻿# ============================================================================
 # BESS v2.0 API - ローカルからVPSへのリモートデプロイスクリプト (Windows)
 # ============================================================================
 
@@ -32,7 +32,7 @@ function Log-Error {
 $VPS_USER = "ubuntu"
 $VPS_HOST = "153.121.61.164"
 $VPS_SSH = "$VPS_USER@$VPS_HOST"
-$APP_DIR = "/var/www/bess-site-survey-system"
+$APP_DIR = "/home/ubuntu/bess-site-survey-system"
 
 # ============================================================================
 # メイン処理
@@ -90,7 +90,7 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}[VPS]${NC} プロジェクトディレクトリに移動..."
-cd /var/www/bess-site-survey-system
+cd /home/ubuntu/bess-site-survey-system
 
 echo -e "${BLUE}[VPS]${NC} 最新コードを取得中..."
 git fetch origin
