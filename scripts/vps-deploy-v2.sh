@@ -64,7 +64,14 @@ log_success "コード取得完了"
 # ステップ3: 依存関係を更新
 log_info "ステップ3: 依存関係を更新中..."
 npm install
-log_success "依存関係更新完了"
+log_success "バックエンド依存関係更新完了"
+
+# ステップ3-2: フロントエンド依存関係を更新
+log_info "ステップ3-2: フロントエンド依存関係を更新中..."
+cd frontend
+npm install
+cd ..
+log_success "フロントエンド依存関係更新完了"
 
 # ステップ4: TypeScriptビルド
 log_info "ステップ4: TypeScriptビルド中..."
